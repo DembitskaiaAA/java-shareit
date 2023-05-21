@@ -51,7 +51,7 @@ public class UserStorageImp implements UserStorage {
         for (Map.Entry<Long, User> entry : users.entrySet()) {
             if (entry.getValue().getEmail().equals(user.getEmail()) && entry.getValue().getId() != userId) {
                 throw new RepeatedValueException(
-                        String.format("При добавлении пользователя ошибка: пользователь c email: %s уже существует",
+                        String.format("При обновлении пользователя ошибка: пользователь c email: %s уже существует",
                                 user.getEmail()));
             }
         }
@@ -74,5 +74,10 @@ public class UserStorageImp implements UserStorage {
     @Override
     public List<UserDto> getAllUsers() {
         return users.values().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Long, User> getUsers() {
+        return users;
     }
 }
