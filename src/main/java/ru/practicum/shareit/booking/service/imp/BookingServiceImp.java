@@ -33,7 +33,8 @@ public class BookingServiceImp implements BookingService {
     private final ItemRepository itemRepository;
 
 
-    public BookingServiceImp(@Lazy BookingRepository bookingRepository, UserRepository userRepository,
+    public BookingServiceImp(@Lazy BookingRepository bookingRepository,
+                             UserRepository userRepository,
                              ItemRepository itemRepository) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
