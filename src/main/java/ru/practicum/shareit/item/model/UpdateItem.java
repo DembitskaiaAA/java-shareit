@@ -4,55 +4,33 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.model.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@Table(name = "ITEMS")
-public class Item {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+public class UpdateItem {
+
     Long id;
 
-    @NotBlank
-    @Column(name = "NAME")
     String name;
 
-    @NotBlank
-    @Column(name = "DESCRIPTION")
     String description;
 
-    @NotNull
-    @Column(name = "AVAILABLE")
     Boolean available;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")
-    User owner;
-    @Column(name = "REQUEST_ID")
+    private User owner;
+
     Long request;
 
-    public Item(String name, String description, Boolean available, User owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-    }
-
-    public Item() {
-    }
-
-    public Item(Long id, String name, String description, Boolean available, User owner, Long request) {
+    public UpdateItem(Long id, String name, String description, Boolean available, User owner, Long request) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.available = available;
         this.owner = owner;
         this.request = request;
+    }
+
+    public UpdateItem() {
     }
 
     public Long getId() {
@@ -123,7 +101,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "UpdateItem{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
