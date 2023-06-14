@@ -30,9 +30,6 @@ public class UpdateItem {
         this.request = request;
     }
 
-    public UpdateItem() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -84,14 +81,9 @@ public class UpdateItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
-        return Objects.equals(getId(), item.getId()) &&
-                Objects.equals(getName(), item.getName()) &&
-                Objects.equals(getDescription(), item.getDescription()) &&
-                Objects.equals(getAvailable(), item.getAvailable()) &&
-                Objects.equals(getOwner(), item.getOwner()) &&
-                Objects.equals(getRequest(), item.getRequest());
+        if (!(o instanceof UpdateItem)) return false;
+        UpdateItem that = (UpdateItem) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getAvailable(), that.getAvailable()) && Objects.equals(getOwner(), that.getOwner()) && Objects.equals(getRequest(), that.getRequest());
     }
 
     @Override

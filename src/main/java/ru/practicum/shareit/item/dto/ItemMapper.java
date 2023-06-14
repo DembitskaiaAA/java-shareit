@@ -47,11 +47,21 @@ public class ItemMapper {
                 comment.getCreated());
     }
 
-    @Autowired
-    public void setBookingService(BookingService bookingService, ItemService itemService) {
+    private static void setBookingService(BookingService bookingService, ItemService itemService) {
         ItemMapper.bookingService = bookingService;
         ItemMapper.itemService = itemService;
     }
 
+    public static BookingService getBookingService() {
+        return bookingService;
+    }
 
+    public static ItemService getItemService() {
+        return itemService;
+    }
+
+    @Autowired
+    public void init(BookingService bookingService, ItemService itemService) {
+        ItemMapper.setBookingService(bookingService, itemService);
+    }
 }

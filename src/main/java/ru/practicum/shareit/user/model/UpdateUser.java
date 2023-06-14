@@ -17,12 +17,6 @@ public class UpdateUser {
             message = "Некорректно указан Email")
     String email;
 
-    public UpdateUser(long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-
     public UpdateUser() {
 
     }
@@ -51,14 +45,15 @@ public class UpdateUser {
         this.email = email;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getId() == user.getId() &&
-                Objects.equals(getName(), user.getName()) &&
-                Objects.equals(getEmail(), user.getEmail());
+        if (!(o instanceof UpdateUser)) return false;
+        UpdateUser that = (UpdateUser) o;
+        return getId() == that.getId() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getEmail(), that.getEmail());
     }
 
     @Override
