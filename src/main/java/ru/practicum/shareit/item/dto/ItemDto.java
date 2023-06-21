@@ -1,64 +1,82 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.dto.BookingItemDto;
+import ru.practicum.shareit.validations.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ItemDto {
     Long id;
-    @NotBlank
+    @NotBlank(groups = {Create.class}, message = "Имя товара не может быть пустым")
     String name;
-    @NotBlank
+    @NotBlank(groups = {Create.class}, message = "Описание товара не может быть пустым")
     String description;
-    @NotNull
+    @NotNull(groups = {Create.class}, message = "Необходимо указать доступность товара для бронирования")
     Boolean available;
+    List<CommentDto> comments;
     BookingItemDto lastBooking;
     BookingItemDto nextBooking;
-    List<CommentDto> comments;
 
-    public ItemDto(Long id, String name, String description, Boolean available,
-                   BookingItemDto lastBooking, BookingItemDto nextBooking, List<CommentDto> comments) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.lastBooking = lastBooking;
-        this.nextBooking = nextBooking;
-        this.comments = comments;
+    public ItemDto() {
     }
 
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Boolean getAvailable() {
         return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public List<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDto> comments) {
+        this.comments = comments;
     }
 
     public BookingItemDto getLastBooking() {
         return lastBooking;
     }
 
+    public void setLastBooking(BookingItemDto lastBooking) {
+        this.lastBooking = lastBooking;
+    }
+
     public BookingItemDto getNextBooking() {
         return nextBooking;
     }
 
-    public List<CommentDto> getComments() {
-        return comments;
+    public void setNextBooking(BookingItemDto nextBooking) {
+        this.nextBooking = nextBooking;
     }
 
     @Override
@@ -66,17 +84,12 @@ public class ItemDto {
         if (this == o) return true;
         if (!(o instanceof ItemDto)) return false;
         ItemDto itemDto = (ItemDto) o;
-        return Objects.equals(id, itemDto.id) && Objects.equals(name, itemDto.name) &&
-                Objects.equals(description, itemDto.description) &&
-                Objects.equals(available, itemDto.available) &&
-                Objects.equals(lastBooking, itemDto.lastBooking) &&
-                Objects.equals(nextBooking, itemDto.nextBooking) &&
-                Objects.equals(comments, itemDto.comments);
+        return Objects.equals(id, itemDto.id) && Objects.equals(name, itemDto.name) && Objects.equals(description, itemDto.description) && Objects.equals(available, itemDto.available) && Objects.equals(comments, itemDto.comments) && Objects.equals(lastBooking, itemDto.lastBooking) && Objects.equals(nextBooking, itemDto.nextBooking);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, available, lastBooking, nextBooking, comments);
+        return Objects.hash(id, name, description, available, comments, lastBooking, nextBooking);
     }
 
     @Override
@@ -86,9 +99,9 @@ public class ItemDto {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", available=" + available +
+                ", comments=" + comments +
                 ", lastBooking=" + lastBooking +
                 ", nextBooking=" + nextBooking +
-                ", comments=" + comments +
                 '}';
     }
 }
