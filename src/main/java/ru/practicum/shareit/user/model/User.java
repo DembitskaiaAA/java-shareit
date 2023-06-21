@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -17,13 +15,9 @@ public class User {
     @Column(name = "ID")
     long id;
 
-    @NotBlank(message = "Имя пользователя не может быть пустым")
     @Column(name = "NAME")
     String name;
 
-    @NotBlank(message = "Электронная почта не может быть пустой")
-    @Email(regexp = "^[_A-Za-z0-9+-]+(?:[.'’][_A-Za-z0-9-]+)*@[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$",
-            message = "Некорректно указан Email")
     @Column(name = "EMAIL")
     String email;
 

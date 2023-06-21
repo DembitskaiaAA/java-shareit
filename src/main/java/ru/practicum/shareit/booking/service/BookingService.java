@@ -28,5 +28,7 @@ public interface BookingService {
 
     BookingItemDto getNextBooking(Item item, BookingStatus state);
 
-    Booking getBookingByUserIdItemIdForComment(Long itemId, Long userId);
+    Booking getBookingByItemIdBookerIdForComment(Long itemId, Long userId);
+
+    Booking validBooking(Long bookingId);
 }

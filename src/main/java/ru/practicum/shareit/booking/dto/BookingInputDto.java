@@ -1,5 +1,7 @@
 package ru.practicum.shareit.booking.dto;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,8 +9,10 @@ import java.util.Objects;
 
 public class BookingInputDto {
     @NotNull(message = "Необходимо заполнить дату начала бронирования")
+    @FutureOrPresent
     LocalDateTime start;
     @NotNull(message = "Необходимо заполнить дату окончания бронирования")
+    @Future
     LocalDateTime end;
     @NotNull(message = "Необходимо указать id объекта бронирования")
     Long itemId;

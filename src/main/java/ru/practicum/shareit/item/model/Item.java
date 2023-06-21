@@ -36,13 +36,6 @@ public class Item {
     @Column(name = "REQUEST_ID")
     Long request;
 
-    public Item(String name, String description, Boolean available, User owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-    }
-
     public Item() {
     }
 
