@@ -51,10 +51,8 @@ public class BookingServiceImp implements BookingService {
 
     @Override
     public BookingOutputDto createBooking(Long booker, BookingInputDto bookingInputDto) {
-        if (bookingInputDto.getStart().isBefore(LocalDateTime.now())
-                || bookingInputDto.getStart().isAfter(bookingInputDto.getEnd())
-                || bookingInputDto.getStart().isEqual(bookingInputDto.getEnd())
-                || bookingInputDto.getEnd().isBefore(LocalDateTime.now())) {
+        if (bookingInputDto.getStart().isAfter(bookingInputDto.getEnd())
+                || bookingInputDto.getStart().isEqual(bookingInputDto.getEnd())) {
             throw new BookingTimeException("При бронировании ошибка: " +
                     "неверно указано время начала или окончания бронирования");
         }
