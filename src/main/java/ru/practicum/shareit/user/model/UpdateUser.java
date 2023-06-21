@@ -3,41 +3,21 @@ package ru.practicum.shareit.user.model;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@Table(name = "USERS")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+public class UpdateUser {
+
     long id;
 
-    @NotBlank(message = "Имя пользователя не может быть пустым")
-    @Column(name = "NAME")
     String name;
 
-    @NotBlank(message = "Электронная почта не может быть пустой")
     @Email(regexp = "^[_A-Za-z0-9+-]+(?:[.'’][_A-Za-z0-9-]+)*@[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$",
             message = "Некорректно указан Email")
-    @Column(name = "EMAIL")
     String email;
 
-    public User(long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-
-    public User(String name) {
-        this.name = name;
-    }
-
-    public User() {
+    public UpdateUser() {
 
     }
 
@@ -65,14 +45,15 @@ public class User {
         this.email = email;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getId() == user.getId() &&
-                Objects.equals(getName(), user.getName()) &&
-                Objects.equals(getEmail(), user.getEmail());
+        if (!(o instanceof UpdateUser)) return false;
+        UpdateUser that = (UpdateUser) o;
+        return getId() == that.getId() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getEmail(), that.getEmail());
     }
 
     @Override
@@ -82,7 +63,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UpdateUser{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +

@@ -14,9 +14,23 @@ public class ErrorHandle {
         return new ErrorResponse(e.getMessage());
     }
 
+
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleRepeatedValueException(final RepeatedValueException e) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleRepeatedValueException(final NotAvailableException e) {
         return new ErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingTimeException(final BookingTimeException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleBookingStateException(final BookingStateException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
 }

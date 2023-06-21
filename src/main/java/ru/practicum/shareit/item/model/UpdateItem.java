@@ -4,49 +4,24 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.model.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@Table(name = "ITEMS")
-public class Item {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+public class UpdateItem {
+
     Long id;
 
-    @NotBlank
-    @Column(name = "NAME")
     String name;
 
-    @NotBlank
-    @Column(name = "DESCRIPTION")
     String description;
 
-    @NotNull
-    @Column(name = "AVAILABLE")
     Boolean available;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")
-    User owner;
-    @Column(name = "REQUEST_ID")
+    private User owner;
+
     Long request;
 
-    public Item(String name, String description, Boolean available, User owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-    }
-
-    public Item() {
-    }
-
-    public Item(Long id, String name, String description, Boolean available, User owner, Long request) {
+    public UpdateItem(Long id, String name, String description, Boolean available, User owner, Long request) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -106,14 +81,9 @@ public class Item {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
-        return Objects.equals(getId(), item.getId()) &&
-                Objects.equals(getName(), item.getName()) &&
-                Objects.equals(getDescription(), item.getDescription()) &&
-                Objects.equals(getAvailable(), item.getAvailable()) &&
-                Objects.equals(getOwner(), item.getOwner()) &&
-                Objects.equals(getRequest(), item.getRequest());
+        if (!(o instanceof UpdateItem)) return false;
+        UpdateItem that = (UpdateItem) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getAvailable(), that.getAvailable()) && Objects.equals(getOwner(), that.getOwner()) && Objects.equals(getRequest(), that.getRequest());
     }
 
     @Override
@@ -123,7 +93,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "UpdateItem{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
