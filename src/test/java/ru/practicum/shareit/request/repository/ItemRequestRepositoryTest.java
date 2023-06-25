@@ -35,7 +35,7 @@ class ItemRequestRepositoryTest {
         entityManager.persist(request2);
         entityManager.persist(request3);
 
-        Long requestorId = 1L;
+        Long requestorId = savedRequester.getId();
         List<ItemRequest> requests = itemRequestRepository.findAllByRequestorIdOrderByCreatedDesc(requestorId);
 
         assertEquals(3, requests.size());
