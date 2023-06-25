@@ -25,16 +25,15 @@ class ItemRequestRepositoryTest {
     @Test
     void test_findAllByRequestorIdOrderByCreatedDesc() {
         User requester = new User(null, "John Doe", "john@email.com");
-        entityManager.persist(requester);
-        LocalDateTime now = LocalDateTime.now();
+        User savedRequester = entityManager.persist(requester);
+        LocalDateTime now = LocalDateTime.of(2023, 6, 26, 1, 9);
 
-        ItemRequest request1 = new ItemRequest(null, "Request 1", requester, now.minusDays(2));
-        ItemRequest request2 = new ItemRequest(null, "Request 2", requester, now.minusDays(1));
-        ItemRequest request3 = new ItemRequest(null, "Request 3", requester, now);
-        entityManager.merge(request1);
-        entityManager.merge(request2);
-        entityManager.merge(request3);
-        entityManager.flush();
+        ItemRequest request1 = new ItemRequest(null, "Request 1", savedRequester, now.minusDays(2));
+        ItemRequest request2 = new ItemRequest(null, "Request 2", savedRequester, now.minusDays(1));
+        ItemRequest request3 = new ItemRequest(null, "Request 3", savedRequester, now);
+        entityManager.persist(request1);
+        entityManager.persist(request2);
+        entityManager.persist(request3);
 
         Long requestorId = 1L;
         List<ItemRequest> requests = itemRequestRepository.findAllByRequestorIdOrderByCreatedDesc(requestorId);
