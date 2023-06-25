@@ -68,7 +68,7 @@ public class ItemRequestServiceImp implements ItemRequestService {
         Pageable pageable = PageRequest.of(0, size, Sort.by("created").ascending());
         List<ItemRequest> result = itemRequestRepository.findAll(pageable).getContent();
         List<ItemRequest> requests = result.subList(from, Math.min((from + size), result.size()));
-        return requests.stream().filter(x -> x.getRequestor().getId() != userId)
+        return requests.stream().filter(x -> !x.getRequestor().getId().equals(userId))
                 .map(itemRequestMapper::transformItemRequestToItemRequestDto)
                 .collect(Collectors.toList());
     }

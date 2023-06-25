@@ -57,7 +57,7 @@ public class BookingServiceImp implements BookingService {
         User savedUser = userService.validUser(booker);
         Item savedItem = itemRepository.findById(bookingInputDto.getItemId()).orElseThrow(() -> new NotFoundException(
                 String.format("При получении товара ошибка: товар c id: %s отсутствует", bookingInputDto.getItemId())));
-        if (savedItem.getOwner().getId() == booker) {
+        if (savedItem.getOwner().getId().equals(booker)) {
             throw new NotFoundException(String.format("При бронировании ошибка: " +
                             "владелец с id: %s не может забронировать свой товар с id: %s",
                     booker, savedItem.getId()));
@@ -79,7 +79,7 @@ public class BookingServiceImp implements BookingService {
     public BookingOutputDto approveBooking(Long owner, Long bookingId, Boolean approved) {
         userService.validUser(owner);
         Booking savedBooking = validBooking(bookingId);
-        if (savedBooking.getItem().getOwner().getId() != owner) {
+        if (!savedBooking.getItem().getOwner().getId().equals(owner)) {
             throw new NotFoundException(String.format("При подтверждении бронирования ошибка: " +
                     "пользователь с id: %s не является владельцем товара", owner));
         }
@@ -100,7 +100,7 @@ public class BookingServiceImp implements BookingService {
     public BookingOutputDto getBooking(Long owner, Long bookingId) {
         userService.validUser(owner);
         Booking savedBooking = validBooking(bookingId);
-        if (savedBooking.getItem().getOwner().getId() != owner && savedBooking.getBooker().getId() != owner) {
+        if (!savedBooking.getItem().getOwner().getId().equals(owner) && !savedBooking.getBooker().getId().equals(owner)) {
             throw new NotFoundException(String.format("При получении информации о бронировании ошибка: " +
                     "пользователь с id: %s не является владельцем товара или осуществляющим бронирование", owner));
         }

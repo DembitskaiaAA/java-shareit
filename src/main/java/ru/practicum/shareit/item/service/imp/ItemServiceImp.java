@@ -88,7 +88,7 @@ public class ItemServiceImp implements ItemService {
     @Override
     public ItemDto getItem(Long itemId, Long ownerId) {
         Item item = validItem(itemId);
-        if (item.getOwner().getId() != ownerId) {
+        if (!item.getOwner().getId().equals(ownerId)) {
             return itemMapper.transformItemToItemDto(item);
         } else {
             return itemMapper.transformItemToItemForOwnerDto(item);
