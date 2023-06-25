@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.service.imp;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.model.Booking;
@@ -15,12 +17,13 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -33,20 +36,29 @@ public class ItemServiceImp implements ItemService {
     private final BookingService bookingService;
     private final CommentRepository commentRepository;
     private final ItemMapper itemMapper;
+    private final ItemRequestService itemRequestService;
 
-    public ItemServiceImp(ItemRepository itemRepository, UserService userService, BookingService bookingService, CommentRepository commentRepository, @Lazy ItemMapper itemMapper) {
+    public ItemServiceImp(ItemRepository itemRepository,
+                          UserService userService,
+                          BookingService bookingService,
+                          CommentRepository commentRepository,
+                          @Lazy ItemMapper itemMapper,
+                          @Lazy ItemRequestService itemRequestService) {
         this.itemRepository = itemRepository;
         this.userService = userService;
         this.bookingService = bookingService;
         this.commentRepository = commentRepository;
         this.itemMapper = itemMapper;
+        this.itemRequestService = itemRequestService;
     }
 
     @Override
     public ItemDto createItem(Long owner, ItemDto itemDto) {
         User savedUser = userService.validUser(owner);
         Item savedItem = itemMapper.transformItemDtoToItem(itemDto);
+        ItemRequest itemRequest = itemRequestService.validItemRequest(itemDto.getRequestId());
         savedItem.setOwner(savedUser);
+        savedItem.setRequest(itemRequest);
         Item item = itemRepository.save(savedItem);
         return itemMapper.transformItemToItemDto(item);
     }
@@ -84,27 +96,36 @@ public class ItemServiceImp implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItems(Long ownerId) {
+    public List<ItemDto> getItems(Long ownerId, Integer from, Integer size) {
         userService.validUser(ownerId);
-        return itemRepository.findAllByOwnerId(ownerId).stream()
-                .map(itemMapper::transformItemToItemForOwnerDto).sorted(Comparator.comparing(ItemDto::getId)).collect(toList());
+        if (size == null) {
+            return new ArrayList<>();
+        }
+        Pageable pageable = PageRequest.of(0, size, Sort.by("id").ascending());
+        List<Item> items = itemRepository.findAllByOwnerId(ownerId, pageable).getContent();
+        List<Item> savedItems = items.subList(from, Math.min((from + size), items.size()));
+        return savedItems.stream().map(itemMapper::transformItemToItemForOwnerDto).collect(toList());
     }
 
     @Override
-    public List<ItemDto> searchItems(String text) {
+    public List<ItemDto> searchItems(String text, Integer from, Integer size) {
         if (text.isBlank()) {
             return new ArrayList<>();
         }
+        if (size == null) {
+            return new ArrayList<>();
+        }
+        Pageable pageable = PageRequest.of(0, size);
+        List<Item> items = itemRepository.search(text, pageable).getContent();
+        List<Item> savedItems = items.subList(from, Math.min((from + size), items.size()));
 
-        List<Item> savedItemsByName = itemRepository.search(text);
-
-        return savedItemsByName.stream().map(itemMapper::transformItemToItemDto).collect(toList());
+        return savedItems.stream().map(itemMapper::transformItemToItemDto).collect(toList());
     }
 
     @Override
     public CommentDto createComment(CommentDto commentDto, Long itemId, Long userId) {
         userService.validUser(userId);
-        itemRepository.findById(userId).orElseThrow(() -> new NotAvailableException(
+        itemRepository.findById(itemId).orElseThrow(() -> new NotAvailableException(
                 String.format("При создании комментария ошибка: неверно передан id: %s товара", itemId)));
         Comment comment = new Comment();
         Booking booking = bookingService.getBookingByItemIdBookerIdForComment(itemId, userId);
@@ -128,9 +149,18 @@ public class ItemServiceImp implements ItemService {
     }
 
     @Override
+    public List<ItemDto> getItemsByRequestId(Long requestId) {
+        List<Item> items = itemRepository.findAllByRequestId(requestId);
+        if (items == null || items.size() == 0) {
+            return new ArrayList<>();
+        }
+        return items.stream().map(itemMapper::transformItemToItemDto).collect(toList());
+    }
+
+    @Override
     public Item validItem(Long itemId) {
         return itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException(
-                String.format("При получении товара ошибка: товар c id: %s отсутствует", itemId)));
+                String.format("Товар c id: %s отсутствует", itemId)));
     }
 
 

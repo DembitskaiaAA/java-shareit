@@ -61,6 +61,10 @@ public class UserServiceImp implements UserService {
     @Override
     public User validUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
-                String.format("При обновлении пользователя ошибка: пользователь c id: %s отсутствует", userId)));
+                String.format("Пользователь c id: %s отсутствует", userId)));
     }
 }
+
+
+
+

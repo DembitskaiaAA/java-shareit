@@ -13,6 +13,7 @@ import ru.practicum.shareit.validations.Update;
 import java.util.List;
 
 @Component
+@Validated
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {

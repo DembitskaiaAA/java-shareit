@@ -16,5 +16,6 @@ public interface UserService {
 
     List<User> getAllUsers();
 
+
     User validUser(Long userId);
 }

@@ -10,6 +10,7 @@ import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.validations.Create;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Component
@@ -24,7 +25,8 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @Validated(Create.class) @RequestBody ItemDto itemDto) {
+    public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+                              @Validated(Create.class) @RequestBody ItemDto itemDto) {
         return itemService.createItem(ownerId, itemDto);
     }
 
@@ -41,13 +43,17 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getItems(@RequestHeader(name = "X-Sharer-User-Id") Long ownerId) {
-        return itemService.getItems(ownerId);
+    public List<ItemDto> getItems(@RequestHeader(name = "X-Sharer-User-Id") Long ownerId,
+                                  @RequestParam(defaultValue = "0") @Min(value = 0) Integer from,
+                                  @RequestParam(defaultValue = "20", required = false) @Min(value = 1) Integer size) {
+        return itemService.getItems(ownerId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchItems(@RequestParam() String text) {
-        return itemService.searchItems(text);
+    public List<ItemDto> searchItems(@RequestParam() String text,
+                                     @RequestParam(defaultValue = "0") @Min(value = 0) Integer from,
+                                     @RequestParam(defaultValue = "20", required = false) @Min(value = 1) Integer size) {
+        return itemService.searchItems(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")

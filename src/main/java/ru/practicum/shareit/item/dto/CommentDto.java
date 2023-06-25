@@ -17,6 +17,9 @@ public class CommentDto {
     private String authorName;
     private LocalDateTime created;
 
+    public CommentDto() {
+    }
+
     public CommentDto(Long id, String text, Item item, String authorName, LocalDateTime created) {
         this.id = id;
         this.text = text;

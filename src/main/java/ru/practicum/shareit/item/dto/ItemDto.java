@@ -5,6 +5,7 @@ import ru.practicum.shareit.validations.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +17,8 @@ public class ItemDto {
     String description;
     @NotNull(groups = {Create.class}, message = "Необходимо указать доступность товара для бронирования")
     Boolean available;
+    @Positive(groups = {Create.class}, message = "Id запроса не может быть отрицательным")
+    Long requestId;
     List<CommentDto> comments;
     BookingItemDto lastBooking;
     BookingItemDto nextBooking;
@@ -79,17 +82,25 @@ public class ItemDto {
         this.nextBooking = nextBooking;
     }
 
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ItemDto)) return false;
         ItemDto itemDto = (ItemDto) o;
-        return Objects.equals(id, itemDto.id) && Objects.equals(name, itemDto.name) && Objects.equals(description, itemDto.description) && Objects.equals(available, itemDto.available) && Objects.equals(comments, itemDto.comments) && Objects.equals(lastBooking, itemDto.lastBooking) && Objects.equals(nextBooking, itemDto.nextBooking);
+        return Objects.equals(getId(), itemDto.getId()) && Objects.equals(getName(), itemDto.getName()) && Objects.equals(getDescription(), itemDto.getDescription()) && Objects.equals(getAvailable(), itemDto.getAvailable()) && Objects.equals(requestId, itemDto.requestId) && Objects.equals(getComments(), itemDto.getComments()) && Objects.equals(getLastBooking(), itemDto.getLastBooking()) && Objects.equals(getNextBooking(), itemDto.getNextBooking());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, available, comments, lastBooking, nextBooking);
+        return Objects.hash(getId(), getName(), getDescription(), getAvailable(), requestId, getComments(), getLastBooking(), getNextBooking());
     }
 
     @Override
@@ -99,6 +110,7 @@ public class ItemDto {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", available=" + available +
+                ", requestId=" + requestId +
                 ", comments=" + comments +
                 ", lastBooking=" + lastBooking +
                 ", nextBooking=" + nextBooking +
