@@ -19,7 +19,7 @@ public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    long id;
+    Long id;
     @Column(name = "DESCRIPTION")
     String description;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +28,7 @@ public class ItemRequest {
     @Column(name = "CREATED")
     LocalDateTime created;
 
-    public ItemRequest(long id, String description, User requestor, LocalDateTime created) {
+    public ItemRequest(Long id, String description, User requestor, LocalDateTime created) {
         this.id = id;
         this.description = description;
         this.requestor = requestor;

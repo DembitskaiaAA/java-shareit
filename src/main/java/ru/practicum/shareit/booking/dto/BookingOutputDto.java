@@ -25,6 +25,9 @@ public class BookingOutputDto {
         this.item = item;
     }
 
+    public BookingOutputDto() {
+    }
+
     public Long getId() {
         return id;
     }

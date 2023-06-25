@@ -129,9 +129,11 @@ public class BookingServiceImp implements BookingService {
         userService.validUser(owner);
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 
-        List<Item> items = itemRepository.findAllByOwnerId(owner, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
+        List<Item> items = itemRepository.findAllByOwnerId(owner, PageRequest.of(0, Integer.MAX_VALUE))
+                .getContent();
 
-        List<Booking> booking = bookingRepository.findAll(pageable).getContent().stream().filter(x -> items.contains(x.getItem()))
+        List<Booking> booking = bookingRepository.findAll(pageable).getContent()
+                .stream().filter(x -> items.contains(x.getItem()))
                 .collect(Collectors.toList());
         List<BookingOutputDto> savedBooking = getBookingByState(booking, state)
                 .stream()

@@ -43,6 +43,14 @@ public class Booking {
         this.end = end;
     }
 
+    public Booking(Long id, LocalDateTime start, LocalDateTime end, Item item, User booker, BookingStatus status) {
+        this.id = id;
+        this.start = start;
+        this.end = end;
+        this.item = item;
+        this.booker = booker;
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
