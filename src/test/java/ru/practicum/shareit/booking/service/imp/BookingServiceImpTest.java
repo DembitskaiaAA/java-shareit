@@ -307,7 +307,10 @@ class BookingServiceImpTest {
         Long bookingId = 2L;
 
         User ownerUser = new User();
-        ownerUser.setId(owner);
+        ownerUser.setId(3L);
+
+        User booker = new User();
+        booker.setId(2L);
 
         Item item = new Item();
         item.setId(4L);
@@ -315,13 +318,13 @@ class BookingServiceImpTest {
 
         Booking booking = new Booking();
         booking.setId(bookingId);
-        booking.setBooker(new User());
+        booking.setBooker(booker);
         booking.setItem(item);
 
         when(userService.validUser(anyLong())).thenReturn(null);
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
 
-        assertThrows(NotFoundException.class, () -> bookingService.getBooking(5L, 6L));
+        assertThrows(NotFoundException.class, () -> bookingService.getBooking(owner, bookingId));
     }
 
     @Test
