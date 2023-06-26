@@ -17,6 +17,7 @@ import ru.practicum.shareit.booking.dto.BookingOutputDto;
 import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.exceptions.BookingStateException;
 import ru.practicum.shareit.exceptions.BookingTimeException;
 import ru.practicum.shareit.exceptions.NotAvailableException;
 import ru.practicum.shareit.exceptions.NotFoundException;
@@ -400,14 +401,38 @@ class BookingServiceImpTest {
 
     @Test
     public void testGetBookingByStateAll() {
-        BookingRepository bookingRepository = mock(BookingRepository.class);
-        UserService userService = mock(UserService.class);
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        BookingMapper bookingMapper = mock(BookingMapper.class);
+        User user1 = new User(1L, "name1", "email1@email.com");
+        User user2 = new User(2L, "name2", "email2@email.com");
+        User user3 = new User(3L, "name3", "email3@email.com");
+
+        Item item1 = new Item();
+        item1.setId(1L);
+        Item item2 = new Item();
+        item1.setId(2L);
+        Item item3 = new Item();
+        item1.setId(3L);
+
+        Booking booking1 = new Booking();
+        booking1.setId(1L);
+        booking1.setStatus(BookingStatus.WAITING);
+        booking1.setItem(item1);
+        booking1.setBooker(user1);
+
+        Booking booking2 = new Booking();
+        booking2.setId(2L);
+        booking2.setStatus(BookingStatus.WAITING);
+        booking2.setItem(item2);
+        booking2.setBooker(user2);
+
+        Booking booking3 = new Booking();
+        booking3.setId(2L);
+        booking3.setStatus(BookingStatus.WAITING);
+        booking3.setItem(item3);
+        booking3.setBooker(user3);
         List<Booking> savedBooking = Arrays.asList(
-                new Booking(),
-                new Booking(),
-                new Booking()
+                booking1,
+                booking2,
+                booking3
         );
         List<BookingOutputDto> expectedBooking = savedBooking.stream()
                 .map(bookingMapper::transformBookingToBookingOutputDto)
@@ -471,6 +496,16 @@ class BookingServiceImpTest {
         List<BookingOutputDto> actualBooking = bookingService.getBookingByState(savedBooking, "WAITING");
 
         assertEquals(expectedBooking, actualBooking);
+    }
+    @Test
+    public void testGetBookingByWrongState() {
+        List<Booking> savedBooking = Arrays.asList(
+                new Booking(),
+                new Booking(),
+                new Booking()
+        );
+
+        assertThrows(BookingStateException.class, () -> bookingService.getBookingByState(savedBooking, "CRINGE"));
     }
 
     @Test

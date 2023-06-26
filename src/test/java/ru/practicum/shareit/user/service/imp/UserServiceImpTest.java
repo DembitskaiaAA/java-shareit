@@ -2,9 +2,12 @@ package ru.practicum.shareit.user.service.imp;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
@@ -27,8 +30,8 @@ class UserServiceImpTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private UserMapper userMapper;
+    @Spy
+    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
     @InjectMocks
     private UserServiceImp userService;
 

@@ -27,15 +27,15 @@ public abstract class ItemRequestMapper {
     @Mapping(target = "items", expression = "java(mapToItems(itemRequest.getId(), itemService))")
     public abstract ItemRequestDto transformItemRequestToItemRequestDto(ItemRequest itemRequest);
 
-    List<ItemDto> mapToItems(Long itemRequestId, ItemService itemService) {
+    public List<ItemDto> mapToItems(Long itemRequestId, ItemService itemService) {
         return itemService.getItemsByRequestId(itemRequestId);
     }
 
-    User mapToRequestor(Long userId, UserService userService) {
+    public User mapToRequestor(Long userId, UserService userService) {
         return userService.getUser(userId);
     }
 
-    Long mapToRequestorId(User user) {
+    public Long mapToRequestorId(User user) {
         return user.getId();
     }
 

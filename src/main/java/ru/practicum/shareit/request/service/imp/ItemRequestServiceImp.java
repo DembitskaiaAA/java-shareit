@@ -21,18 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class ItemRequestServiceImp implements ItemRequestService {
 
-    private final ItemRequestMapper itemRequestMapper;
-    private final ItemRequestRepository itemRequestRepository;
-    private final UserService userService;
-
-
     @Autowired
-    public ItemRequestServiceImp(ItemRequestMapper itemRequestMapper, ItemRequestRepository itemRequestRepository, UserService userService) {
-        this.itemRequestMapper = itemRequestMapper;
-        this.itemRequestRepository = itemRequestRepository;
-        this.userService = userService;
-
-    }
+    private ItemRequestMapper itemRequestMapper;
+    @Autowired
+    private ItemRequestRepository itemRequestRepository;
+    @Autowired
+    private UserService userService;
 
     @Override
     public ItemRequestDto createRequest(Long userId, ItemRequestDto itemRequestDto) {

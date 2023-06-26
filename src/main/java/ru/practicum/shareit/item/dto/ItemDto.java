@@ -26,6 +26,17 @@ public class ItemDto {
     public ItemDto() {
     }
 
+    public ItemDto(Long id, String name, String description, Boolean available, Long requestId, List<CommentDto> comments, BookingItemDto lastBooking, BookingItemDto nextBooking) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.requestId = requestId;
+        this.comments = comments;
+        this.lastBooking = lastBooking;
+        this.nextBooking = nextBooking;
+    }
+
     public Long getId() {
         return id;
     }
