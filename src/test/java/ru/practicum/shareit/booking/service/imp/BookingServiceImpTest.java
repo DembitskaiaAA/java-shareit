@@ -497,6 +497,7 @@ class BookingServiceImpTest {
 
         assertEquals(expectedBooking, actualBooking);
     }
+
     @Test
     public void testGetBookingByWrongState() {
         List<Booking> savedBooking = Arrays.asList(
