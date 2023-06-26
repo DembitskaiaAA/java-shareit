@@ -98,18 +98,6 @@ class BookingServiceImpTest {
 
     @Test
     public void testCreateBookingWithInvalidTime() {
-        BookingRepository bookingRepository = mock(BookingRepository.class);
-        UserService userService = mock(UserService.class);
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        BookingMapper bookingMapper = mock(BookingMapper.class);
-
-        BookingServiceImp bookingService = new BookingServiceImp(
-                bookingRepository,
-                userService,
-                itemRepository,
-                bookingMapper
-        );
-
         Long bookerId = 1L;
         Long itemId = 2L;
         LocalDateTime start = LocalDateTime.now();
@@ -225,7 +213,7 @@ class BookingServiceImpTest {
         resultBooking.setId(6L);
         resultBooking.setItem(item);
         resultBooking.setBooker(booker);
-        resultBooking.setStatus(BookingStatus.APPROVED);
+        resultBooking.setStatus(BookingStatus.CANCELED);
 
         when(userService.validUser(owner)).thenReturn(itemOwner);
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(savedBooking));
@@ -235,7 +223,7 @@ class BookingServiceImpTest {
         BookingOutputDto outputDto = bookingService.approveBooking(owner, bookingId, approved);
 
         assertNotNull(outputDto);
-        assertEquals(BookingStatus.APPROVED, resultBooking.getStatus());
+        assertEquals(BookingStatus.CANCELED, resultBooking.getStatus());
         verify(bookingRepository).save(savedBooking);
     }
 
@@ -572,5 +560,42 @@ class BookingServiceImpTest {
 
         assertNotNull(result);
         assertEquals(expectedBookingItemDto, result);
+    }
+
+    @Test
+    public void testValidBooking() {
+        Item item = new Item();
+        item.setId(1L);
+        User user = new User();
+        user.setId(1L);
+
+        Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setBooker(user);
+        booking.setItem(item);
+        booking.setStatus(BookingStatus.APPROVED);
+
+        when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+
+        Booking result = bookingService.validBooking(1L);
+        assertEquals(booking, result);
+    }
+
+    @Test
+    public void testWrongBooking() {
+        Item item = new Item();
+        item.setId(1L);
+        User user = new User();
+        user.setId(1L);
+
+        Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setBooker(user);
+        booking.setItem(item);
+        booking.setStatus(BookingStatus.APPROVED);
+
+        when(bookingRepository.findById(1L)).thenThrow(new NotFoundException("Not valid"));
+
+        assertThrows(NotFoundException.class, () -> bookingService.validBooking(1L));
     }
 }

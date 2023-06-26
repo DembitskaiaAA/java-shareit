@@ -34,9 +34,4 @@ public abstract class ItemRequestMapper {
     public User mapToRequestor(Long userId, UserService userService) {
         return userService.getUser(userId);
     }
-
-    public Long mapToRequestorId(User user) {
-        return user.getId();
-    }
-
 }

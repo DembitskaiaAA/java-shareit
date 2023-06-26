@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.model;
 
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
@@ -8,8 +9,8 @@ import ru.practicum.shareit.user.model.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ITEMS")
@@ -96,35 +97,5 @@ public class Item {
 
     public void setRequest(ItemRequest request) {
         this.request = request;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
-        return Objects.equals(getId(), item.getId()) &&
-                Objects.equals(getName(), item.getName()) &&
-                Objects.equals(getDescription(), item.getDescription()) &&
-                Objects.equals(getAvailable(), item.getAvailable()) &&
-                Objects.equals(getOwner(), item.getOwner()) &&
-                Objects.equals(getRequest(), item.getRequest());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getAvailable(), getOwner(), getRequest());
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", available=" + available +
-                ", owner=" + owner +
-                ", request=" + request +
-                '}';
     }
 }

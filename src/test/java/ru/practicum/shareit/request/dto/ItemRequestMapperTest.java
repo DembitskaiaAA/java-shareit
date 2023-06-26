@@ -12,8 +12,10 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,4 +47,23 @@ public class ItemRequestMapperTest {
         assertEquals(created, itemRequest.getCreated());
         assertEquals(user, itemRequest.getRequestor());
     }
+
+    @Test
+    public void testTransformItemRequestToItemRequestDto() {
+        LocalDateTime now = LocalDateTime.now();
+        User user = new User(1L, "John Doe", "john@email.com");
+        ItemRequest itemRequest = new ItemRequest(1L, "item", user, now);
+        ItemRequestDto expectedDto = new ItemRequestDto(1L, "item", 1L, now, new ArrayList<>());
+
+        when(itemService.getItemsByRequestId(1L)).thenReturn(new ArrayList<>());
+
+        ItemRequestDto resultDto = itemRequestMapper.transformItemRequestToItemRequestDto(itemRequest);
+
+        assertEquals(expectedDto.getId(), resultDto.getId());
+        assertEquals(expectedDto.getDescription(), resultDto.getDescription());
+        assertEquals(expectedDto.getCreated(), resultDto.getCreated());
+        assertNull(resultDto.getRequestor());
+    }
+
+
 }
