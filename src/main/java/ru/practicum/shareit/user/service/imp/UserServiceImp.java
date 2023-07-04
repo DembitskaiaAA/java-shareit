@@ -5,71 +5,66 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
-import ru.practicum.shareit.user.model.UpdateUser;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository) {
+    public UserServiceImp(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public UserDto createUser(User user) {
-        User savedUser = userRepository.save(user);
-        return UserMapper.toUserDto(savedUser);
+    public User createUser(UserDto userDto) {
+        User savedUser = userMapper.transformUserDtoToUser(userDto);
+        return userRepository.save(savedUser);
     }
 
     @Override
     public String deleteUser(Long userId) {
-        if (userRepository.existsById(userId)) {
-            userRepository.deleteById(userId);
-            return String.format("Пользователь с id: %s удален", userId);
-        } else {
-            throw new NotFoundException(
-                    String.format("При удалении пользователя ошибка: пользователь c id: %s отсутствует", userId));
-        }
+        validUser(userId);
+        userRepository.deleteById(userId);
+        return String.format("Пользователь с id: %s удален", userId);
     }
 
     @Override
-    public UserDto updateUser(Long userId, UpdateUser updateUser) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
-                String.format("При обновлении пользователя ошибка: пользователь c id: %s отсутствует", userId)));
-
-        if (updateUser.getEmail() != null) {
-            user.setEmail(updateUser.getEmail());
+    public User updateUser(Long userId, UserDto userDto) {
+        User user = validUser(userId);
+        if (userDto.getEmail() != null) {
+            user.setEmail(userDto.getEmail());
         }
-
-        if (updateUser.getName() != null) {
-            user.setName(updateUser.getName());
+        if (userDto.getName() != null) {
+            user.setName(userDto.getName());
         }
-
-        return UserMapper.toUserDto(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     @Override
-    public UserDto getUser(Long userId) {
-        if (userRepository.existsById(userId)) {
-            User savedUser = userRepository.findById(userId).get();
-            return UserMapper.toUserDto(savedUser);
-        } else {
-            throw new NotFoundException(
-                    String.format("При удалении получении пользователя ошибка: пользователь c id: %s отсутствует", userId));
-        }
+    public User getUser(Long userId) {
+        return validUser(userId);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        List<User> savedUsers = userRepository.findAll();
-        return savedUsers.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User validUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
+                String.format("Пользователь c id: %s отсутствует", userId)));
     }
 }
+
+
+
+

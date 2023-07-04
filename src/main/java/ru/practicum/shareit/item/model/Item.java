@@ -1,14 +1,16 @@
 package ru.practicum.shareit.item.model;
 
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ITEMS")
@@ -33,20 +35,14 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")
     User owner;
-    @Column(name = "REQUEST_ID")
-    Long request;
-
-    public Item(String name, String description, Boolean available, User owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "REQUEST_ID", referencedColumnName = "ID")
+    ItemRequest request;
 
     public Item() {
     }
 
-    public Item(Long id, String name, String description, Boolean available, User owner, Long request) {
+    public Item(Long id, String name, String description, Boolean available, User owner, ItemRequest request) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -95,41 +91,11 @@ public class Item {
         this.owner = owner;
     }
 
-    public Long getRequest() {
+    public ItemRequest getRequest() {
         return request;
     }
 
-    public void setRequest(Long request) {
+    public void setRequest(ItemRequest request) {
         this.request = request;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
-        return Objects.equals(getId(), item.getId()) &&
-                Objects.equals(getName(), item.getName()) &&
-                Objects.equals(getDescription(), item.getDescription()) &&
-                Objects.equals(getAvailable(), item.getAvailable()) &&
-                Objects.equals(getOwner(), item.getOwner()) &&
-                Objects.equals(getRequest(), item.getRequest());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getAvailable(), getOwner(), getRequest());
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", available=" + available +
-                ", owner=" + owner +
-                ", request=" + request +
-                '}';
     }
 }
