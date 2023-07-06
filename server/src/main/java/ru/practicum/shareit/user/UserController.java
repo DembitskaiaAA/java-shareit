@@ -48,35 +48,4 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
-
-
-
-
-
-
-
-/*    @PostMapping
-    public User createUser(@Validated(Create.class) @RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
-    }
-
-    @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable Long userId) {
-        return userService.deleteUser(userId);
-    }
-
-    @PatchMapping("/{userId}")
-    public User updateUser(@PathVariable Long userId, @Validated(Update.class) @RequestBody UserDto userDto) {
-        return userService.updateUser(userId, userDto);
-    }
-
-    @GetMapping("/{userId}")
-    public User getUser(@PathVariable Long userId) {
-        return userService.getUser(userId);
-    }
-
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }*/
 }

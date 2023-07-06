@@ -28,13 +28,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class BookingServiceImp implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ItemRepository itemRepository;
     private final BookingMapper bookingMapper;
-
 
     public BookingServiceImp(BookingRepository bookingRepository,
                              UserService userService,

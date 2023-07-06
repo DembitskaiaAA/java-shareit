@@ -22,14 +22,4 @@ public class ItemRequestDto {
     Long requestor;
     LocalDateTime created;
     List<ItemDto> items;
-
-
-
-/*    long id;
-    @NotNull(groups = Create.class, message = "Необходимо заполнить описание в запросе")
-    String description;
-    @JsonIgnore
-    Long requestor;
-    LocalDateTime created;
-    List<ItemDto> items;*/
 }

@@ -1,19 +1,20 @@
 package ru.practicum.shareit.item.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.booking.dto.BookingItemDto;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.validations.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemDto {
     Long id;
     @NotBlank(groups = {Create.class}, message = "Имя товара не может быть пустым")
@@ -24,7 +25,4 @@ public class ItemDto {
     Boolean available;
     @Positive(groups = {Create.class}, message = "Id запроса не может быть отрицательным")
     Long requestId;
-    List<CommentDto> comments;
-    BookingItemDto lastBooking;
-    BookingItemDto nextBooking;
 }

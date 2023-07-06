@@ -33,29 +33,6 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REQUEST_ID", referencedColumnName = "ID")
     ItemRequest request;
-/*    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    Long id;
-
-    @NotBlank
-    @Column(name = "NAME")
-    String name;
-
-    @NotBlank
-    @Column(name = "DESCRIPTION")
-    String description;
-
-    @NotNull
-    @Column(name = "AVAILABLE")
-    Boolean available;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")
-    User owner;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REQUEST_ID", referencedColumnName = "ID")
-    ItemRequest request;*/
 
     public Item() {
     }
